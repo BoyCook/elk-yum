@@ -18,21 +18,28 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--memory", 4096]
   end
 
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.33.10", virtualbox__intnet: true
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 5601, host: 5601
+  config.vm.provision "file", source: "elasticsearch.repo", destination: "/tmp/elasticsearch.repo"
+  config.vm.provision "file", source: "kibana.repo", destination: "/tmp/kibana.repo"
+  config.vm.provision "file", source: "logstash.repo", destination: "/tmp/logstash.repo"
 
   config.vm.provision "shell", inline: <<-SHELL
-    yum makecache fast
-    sudo yum -y install git
-    sudo yum -y install wget
-    git clone https://gist.github.com/dccbd2cd1e5dc9b61df0fe32a9d562bf.git setupjava
-    cd setupjava
-    sudo ./install_java.sh
-    cd
-    git clone https://github.com/BoyCook/elk-yum.git
-    cd elk-yum
-    sudo ./setup.sh
+    BASE_URL=http://download.oracle.com/otn-pub/java/jdk
+    JAVA_URL="$BASE_URL/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm"
+    curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O "${JAVA_URL}"
+    sudo yum -y localinstall jdk-8u131-linux-x64.rpm
+
+    sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+    sudo mv /tmp/*.repo /etc/yum.repos.d/
+    echo 'yum install components'
+    sudo yum -y install elasticsearch kibana logstash
+
+    echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
+    echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
+    echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml    
   SHELL
 
   # Disable automatic box update checking. If you disable this, then
