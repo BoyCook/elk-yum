@@ -25,6 +25,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     yum makecache fast
     sudo yum -y install git
+    sudo yum -y install wget
     git clone https://gist.github.com/dccbd2cd1e5dc9b61df0fe32a9d562bf.git setupjava
     cd setupjava
     sudo ./install_java.sh
