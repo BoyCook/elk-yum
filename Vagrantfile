@@ -21,6 +21,18 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 5601, host: 5601
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    yum makecache fast
+    sudo yum -y install git
+    git clone https://gist.github.com/dccbd2cd1e5dc9b61df0fe32a9d562bf.git setupjava
+    cd setupjava
+    ./install_java.sh
+    cd
+    git clone https://github.com/BoyCook/elk-yum.git
+    cd elk-yum
+    sudo ./setup.sh
+  SHELL
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -68,19 +80,4 @@ Vagrant.configure("2") do |config|
   # config.push.define "atlas" do |push|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    yum makecache fast
-    sudo yum -y install git
-    git clone https://gist.github.com/dccbd2cd1e5dc9b61df0fe32a9d562bf.git setupjava
-    cd setupjava
-    ./install_java.sh
-    cd
-    git clone https://github.com/BoyCook/elk-yum.git
-    cd elk-yum
-    sudo ./setup.sh
-  SHELL
 end
