@@ -7,8 +7,10 @@ Setup ELK yum installation packages
 
 ### Services
 
-* http://192.168.33.20:9200
-* http://192.168.33.20:5601
+Services run on host but ports are forwarded from guest to host
+
+* http://localhost:9200
+* http://localhost:5601
 
 ### References
 
