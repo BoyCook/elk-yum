@@ -4,14 +4,14 @@ echo 'Download and install the public signing key:'
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
 echo 'Copying files into /etc/yum.repos.d/[elasticsearch.repo|kibana.repo|logstash.repo]'
-cp elasticsearch.repo /etc/yum.repos.d/
-cp kibana.repo /etc/yum.repos.d/
-cp logstash.repo /etc/yum.repos.d/
+sudo cp elasticsearch.repo /etc/yum.repos.d/
+sudo cp kibana.repo /etc/yum.repos.d/
+sudo cp logstash.repo /etc/yum.repos.d/
 
 echo 'yum install components'
-sudo yum install elasticsearch
-sudo yum install kibana
-sudo yum install logstash
+sudo yum -y install elasticsearch
+sudo yum -y install kibana
+sudo yum -y install logstash
 
 echo 'Create unix services'
 sudo /bin/systemctl daemon-reload
