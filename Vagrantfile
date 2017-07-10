@@ -21,13 +21,13 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 5601, host: 5601
-  
+
   config.vm.provision "shell", inline: <<-SHELL
     yum makecache fast
     sudo yum -y install git
     git clone https://gist.github.com/dccbd2cd1e5dc9b61df0fe32a9d562bf.git setupjava
     cd setupjava
-    ./install_java.sh
+    sudo ./install_java.sh
     cd
     git clone https://github.com/BoyCook/elk-yum.git
     cd elk-yum
