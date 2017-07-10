@@ -39,7 +39,16 @@ Vagrant.configure("2") do |config|
 
     echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
-    echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml    
+    echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml
+
+    echo 'Create unix services'
+    sudo /bin/systemctl enable elasticsearch
+    sudo /bin/systemctl enable kibana
+    sudo /bin/systemctl enable logstash
+
+    sudo systemctl start kibana
+    sudo systemctl start elasticsearch
+    sudo systemctl start logstash
   SHELL
 
   # Disable automatic box update checking. If you disable this, then
