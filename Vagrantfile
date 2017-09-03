@@ -25,9 +25,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "elasticsearch.repo", destination: "/tmp/elasticsearch.repo"
   config.vm.provision "file", source: "kibana.repo", destination: "/tmp/kibana.repo"
   config.vm.provision "file", source: "logstash.repo", destination: "/tmp/logstash.repo"
-
+  
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-
+    sudo yum install net-tools
     BASE_URL=http://download.oracle.com/otn-pub/java/jdk
     JAVA_URL="$BASE_URL/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm"
     curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O "${JAVA_URL}"
