@@ -26,3 +26,6 @@ sudo /sbin/chkconfig --add logstash
 sudo /sbin/chkconfig elasticsearch on
 sudo /sbin/chkconfig kibana on
 sudo /sbin/chkconfig logstash on
+
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-6.2.1-x86_64.rpm
+sudo rpm -vi metricbeat-6.2.1-x86_64.rpm

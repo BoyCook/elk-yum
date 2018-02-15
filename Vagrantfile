@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "elasticsearch.repo", destination: "/tmp/elasticsearch.repo"
   config.vm.provision "file", source: "kibana.repo", destination: "/tmp/kibana.repo"
   config.vm.provision "file", source: "logstash.repo", destination: "/tmp/logstash.repo"
+  config.vm.provision "file", source: "elastic.repo", destination: "/tmp/elastic.repo"
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum install net-tools
@@ -36,7 +37,7 @@ Vagrant.configure("2") do |config|
 
     sudo mv /tmp/*.repo /etc/yum.repos.d/
     echo 'yum install components'
-    sudo yum -y install elasticsearch kibana logstash
+    sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
 
     echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
@@ -46,10 +47,25 @@ Vagrant.configure("2") do |config|
     sudo /bin/systemctl enable elasticsearch
     sudo /bin/systemctl enable kibana
     sudo /bin/systemctl enable logstash
+    sudo /bin/systemctl enable metricbeat
+    sudo /bin/systemctl enable filebeat
+    sudo /bin/systemctl enable packetbeat
+    sudo /bin/systemctl enable heartbeat-elastic
+    sudo /bin/systemctl enable auditbeat
+    # sudo chkconfig --add metricbeat
+    # sudo chkconfig --add filebeat
+    # sudo chkconfig --add packetbeat
+    # sudo chkconfig --add heartbeat-elastic
+    # sudo chkconfig --add auditbeat
 
     sudo systemctl start kibana
     sudo systemctl start elasticsearch
     sudo systemctl start logstash
+    sudo systemctl start metricbeat
+    sudo systemctl start filebeat
+    sudo systemctl start packetbeat
+    sudo systemctl start heartbeat-elastic
+    sudo systemctl start auditbeat
   SHELL
 
   # Disable automatic box update checking. If you disable this, then

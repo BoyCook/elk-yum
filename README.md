@@ -9,8 +9,8 @@ Setup ELK yum installation packages
 
 Services run on host but ports are forwarded from guest to host
 
-* http://localhost:9200
-* http://localhost:5601
+* Elastic: http://localhost:9200
+* Kiabana: http://localhost:5601
 
 ### References
 
