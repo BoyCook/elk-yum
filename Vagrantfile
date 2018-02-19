@@ -37,9 +37,9 @@ Vagrant.configure("2") do |config|
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
     sudo yum -y install erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
 
-    echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
-    echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
-    echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml
+    # echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
+    # echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
+    # echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml
 
     sudo cp /tmp/auditbeat.yml /etc/auditbeat
     sudo cp /tmp/filebeat.yml /etc/filebeat
@@ -80,6 +80,16 @@ Vagrant.configure("2") do |config|
     sudo service mongod start
 
     sudo metricbeat modules enable mongodb rabbitmq kibana logstash
+
+    cd /usr/share/elasticsearch
+    sudo bin/elasticsearch-plugin install x-pack
+    sudo bin/x-pack/setup-passwords interactive
+
+    cd /usr/share/kibana
+    sudo bin/kibana-plugin install x-pack
+
+    cd /usr/share/logstash
+    sudo bin/logstash-plugin install x-pack
 
     # sudo metricbeat setup
     # sudo filebeat setup

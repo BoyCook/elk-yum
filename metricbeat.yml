@@ -29,6 +29,9 @@ metricbeat.modules:
     metricsets: ["node", "queue"]
     period: 10s
     hosts: ["localhost:15672"]
+    
+    username: guest
+    password: guest
 
   - module: kibana
     metricsets: ["status"]
