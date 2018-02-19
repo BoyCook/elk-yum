@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
     echo 'yum install components'
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
     sudo yum -y install erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
-    
+
     echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
     echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml
@@ -65,7 +65,8 @@ Vagrant.configure("2") do |config|
     sudo /sbin/chkconfig packetbeat on
     sudo /sbin/chkconfig heartbeat-elastic on
     sudo /sbin/chkconfig auditbeat on
-    sudo chkconfig rabbitmq-server on
+    sudo /sbin/chkconfig rabbitmq-server on
+    sudo /sbin/chkconfig mongod on
 
     sudo service kibana start
     sudo service elasticsearch start
@@ -76,6 +77,7 @@ Vagrant.configure("2") do |config|
     sudo service heartbeat-elastic start
     sudo service auditbeat start
     sudo service rabbitmq-server start
+    sudo service mongod start
 
     # sudo metricbeat setup
     # sudo filebeat setup
