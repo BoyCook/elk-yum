@@ -4,6 +4,7 @@ Setup ELK yum installation packages
 ### command
 
   sudo ./setup.sh
+  beatname -c beatname.yml -configtest
 
 ### Services
 

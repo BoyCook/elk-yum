@@ -19,6 +19,59 @@ metricbeat.config.modules:
   # Period on which files under path should be checked for changes
   #reload.period: 10s
 
+metricbeat.modules:
+  - module: mongodb
+    metricsets: ["collstats","dbstats", "status"]
+    period: 10s
+    hosts: ["localhost:27017"]
+
+  - module: rabbitmq
+    metricsets: ["node", "queue"]
+    period: 10s
+    hosts: ["localhost:15672"]
+
+  - module: kibana
+    metricsets: ["status"]
+    period: 10s
+    hosts: ["localhost:5601"]
+
+  - module: logstash
+    metricsets: ["node", "node_stats"]
+    enabled: false
+    period: 10s
+    hosts: ["localhost:9600"]
+
+  - module: system
+    period: 10s
+    metricsets:
+      - cpu
+      - load
+      - memory
+      - network
+      - process
+      - process_summary
+      - core
+      - diskio
+      - socket
+    processes: ['.*']
+    process.include_top_n:
+      by_cpu: 5      # include top 5 processes by CPU
+      by_memory: 5   # include top 5 processes by memory
+
+  - module: system
+    period: 1m
+    metricsets:
+      - filesystem
+      - fsstat
+    processors:
+    - drop_event.when.regexp:
+        system.filesystem.mount_point: '^/(sys|cgroup|proc|dev|etc|host|lib)($|/)'
+
+  - module: system
+    period: 15m
+    metricsets:
+      - uptime
+
 #==================== Elasticsearch template setting ==========================
 
 setup.template.settings:
@@ -94,9 +147,9 @@ output.elasticsearch:
   password: "changeme"
 
 #----------------------------- Logstash output --------------------------------
-#output.logstash:
+# output.logstash:
   # The Logstash hosts
-  #hosts: ["localhost:5044"]
+  # hosts: ["localhost:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
@@ -112,7 +165,7 @@ output.elasticsearch:
 
 # Sets log level. The default log level is info.
 # Available log levels are: error, warning, info, debug
-#logging.level: debug
+logging.level: debug
 
 # At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",

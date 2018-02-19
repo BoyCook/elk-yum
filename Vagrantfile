@@ -79,6 +79,8 @@ Vagrant.configure("2") do |config|
     sudo service rabbitmq-server start
     sudo service mongod start
 
+    sudo metricbeat modules enable mongodb rabbitmq kibana logstash
+
     # sudo metricbeat setup
     # sudo filebeat setup
     # sudo packetbeat setup
