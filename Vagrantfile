@@ -11,6 +11,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.10", virtualbox__intnet: true
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 5601, host: 5601
+  config.vm.provision "file", source: "rabbitmq-erlang.repo", destination: "/tmp/rabbitmq-erlang.repo"
+  config.vm.provision "file", source: "mongodb-org-3.6.repo", destination: "/tmp/mongodb-org-3.6.repo"
   config.vm.provision "file", source: "elastic.repo", destination: "/tmp/elastic.repo"
   config.vm.provision "file", source: "auditbeat.yml", destination: "/tmp/auditbeat.yml"
   config.vm.provision "file", source: "filebeat.yml", destination: "/tmp/filebeat.yml"
@@ -27,11 +29,14 @@ Vagrant.configure("2") do |config|
 
     sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
     sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+    sudo rpm --import https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
 
     sudo mv /tmp/*.repo /etc/yum.repos.d/
+    curl -O -L https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.3/rabbitmq-server-3.7.3-1.el7.noarch.rpm
     echo 'yum install components'
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
-
+    sudo yum -y install erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
+    
     echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
     echo 'server.host: 0.0.0.0' | sudo tee -a /etc/kibana/kibana.yml
@@ -52,15 +57,6 @@ Vagrant.configure("2") do |config|
     sudo /bin/systemctl enable heartbeat-elastic
     sudo /bin/systemctl enable auditbeat
 
-    sudo service kibana start
-    sudo service elasticsearch start
-    sudo service logstash start
-    sudo service metricbeat start
-    sudo service filebeat start
-    sudo service packetbeat start
-    sudo service heartbeat-elastic start
-    sudo service auditbeat start
-
     sudo /sbin/chkconfig kibana on
     sudo /sbin/chkconfig elasticsearch on
     sudo /sbin/chkconfig logstash on
@@ -69,11 +65,22 @@ Vagrant.configure("2") do |config|
     sudo /sbin/chkconfig packetbeat on
     sudo /sbin/chkconfig heartbeat-elastic on
     sudo /sbin/chkconfig auditbeat on
+    sudo chkconfig rabbitmq-server on
 
-    sudo metricbeat setup
-    sudo filebeat setup
-    sudo packetbeat setup
-    sudo heartbeat setup
-    sudo auditbeat setup    
+    sudo service kibana start
+    sudo service elasticsearch start
+    sudo service logstash start
+    sudo service metricbeat start
+    sudo service filebeat start
+    sudo service packetbeat start
+    sudo service heartbeat-elastic start
+    sudo service auditbeat start
+    sudo service rabbitmq-server start
+
+    # sudo metricbeat setup
+    # sudo filebeat setup
+    # sudo packetbeat setup
+    # sudo heartbeat setup
+    # sudo auditbeat setup
   SHELL
 end
