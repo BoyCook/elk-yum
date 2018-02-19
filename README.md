@@ -15,3 +15,4 @@ Services run on host but ports are forwarded from guest to host
 ### References
 
 * https://logz.io/learn/elk-stack-tutorial/
+* https://github.com/invernizzi/vagrant-scp
