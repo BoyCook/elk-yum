@@ -35,7 +35,8 @@ Vagrant.configure("2") do |config|
     curl -O -L https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.3/rabbitmq-server-3.7.3-1.el7.noarch.rpm
     echo 'yum install components'
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
-    sudo yum -y install erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
+    sudo yum -y install telnet erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
+
 
     # echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     # echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
@@ -90,6 +91,8 @@ Vagrant.configure("2") do |config|
 
     cd /usr/share/logstash
     sudo bin/logstash-plugin install x-pack
+
+    sudo rabbitmq-plugins enable rabbitmq_management
 
     # sudo metricbeat setup
     # sudo filebeat setup

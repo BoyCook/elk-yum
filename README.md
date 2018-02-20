@@ -15,8 +15,9 @@ Services run on host but ports are forwarded from guest to host
 
 ### References
 
-* https://logz.io/learn/elk-stack-tutorial/
+* https://logz.io/learn/elk-stack-tutorial
 * https://github.com/invernizzi/vagrant-scp
 * https://github.com/rabbitmq/erlang-rpm
 * https://www.rabbitmq.com/install-rpm.html
-* https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/
+* https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat
+* https://www.elastic.co/guide/en/x-pack/current/beats.html
