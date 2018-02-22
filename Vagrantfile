@@ -11,6 +11,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.10", virtualbox__intnet: true
   config.vm.network "forwarded_port", guest: 9200, host: 9200
   config.vm.network "forwarded_port", guest: 5601, host: 5601
+  config.vm.network "forwarded_port", guest: 15672, host: 15672
+  config.vm.network "forwarded_port", guest: 5672, host: 5672
   config.vm.provision "file", source: "rabbitmq-erlang.repo", destination: "/tmp/rabbitmq-erlang.repo"
   config.vm.provision "file", source: "mongodb-org-3.6.repo", destination: "/tmp/mongodb-org-3.6.repo"
   config.vm.provision "file", source: "elastic.repo", destination: "/tmp/elastic.repo"
@@ -36,7 +38,7 @@ Vagrant.configure("2") do |config|
     echo 'yum install components'
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
     sudo yum -y install telnet erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
-
+    sudo yum -y install mariadb-server mariadb
 
     # echo 'network.host: 0.0.0.0' | sudo tee -a /etc/elasticsearch/elasticsearch.yml
     # echo 'http.host: 0.0.0.0' | sudo tee -a /etc/logstash/logstash.yml
@@ -83,8 +85,12 @@ Vagrant.configure("2") do |config|
     sudo metricbeat modules enable mongodb rabbitmq kibana logstash
 
     cd /usr/share/elasticsearch
+    sudo bin/elasticsearch-plugin install ingest-geoip
     sudo bin/elasticsearch-plugin install x-pack
     sudo bin/x-pack/setup-passwords interactive
+
+    sudo filebeat modules enable system
+    sudo filebeat modules enable mysql
 
     cd /usr/share/kibana
     sudo bin/kibana-plugin install x-pack

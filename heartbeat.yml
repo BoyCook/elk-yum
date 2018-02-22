@@ -27,7 +27,7 @@ heartbeat.monitors:
 - type: tcp
   schedule: '@every 5s'
   hosts: ["myhost:12345"]
-  mode: any 
+  mode: any
 
 #==================== Elasticsearch template setting ==========================
 
@@ -97,11 +97,8 @@ setup.kibana:
 output.elasticsearch:
   # Array of hosts to connect to.
   hosts: ["localhost:9200"]
-
-  # Optional protocol and basic auth credentials.
-  #protocol: "https"
-  #username: "elastic"
-  #password: "changeme"
+  username: "beats"
+  password: "password"
 
 #----------------------------- Logstash output --------------------------------
 #output.logstash:
