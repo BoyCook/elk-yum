@@ -21,3 +21,5 @@ Services run on host but ports are forwarded from guest to host
 * https://www.rabbitmq.com/install-rpm.html
 * https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat
 * https://www.elastic.co/guide/en/x-pack/current/beats.html
+
+### Windows

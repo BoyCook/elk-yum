@@ -36,6 +36,7 @@ Vagrant.configure("2") do |config|
     sudo mv /tmp/*.repo /etc/yum.repos.d/
     curl -O -L https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.3/rabbitmq-server-3.7.3-1.el7.noarch.rpm
     echo 'yum install components'
+    # sudo yum -y install java-1.8.0-openjdk
     sudo yum -y install elasticsearch kibana logstash metricbeat filebeat packetbeat heartbeat-elastic auditbeat
     sudo yum -y install telnet erlang mongodb-org rabbitmq-server-3.7.3-1.el7.noarch.rpm
     sudo yum -y install mariadb-server mariadb
